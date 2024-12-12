@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Reports</h1>
+
+    <!-- گزارش فروش -->
+    <section>
+        <h2>Sales Report</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Sales</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in sales_reports %}
+                <tr>
+                    <td>{{ report['month'] }}</td>
+                    <td>${{ report['total_sales'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- گزارش کاربران -->
+    <section>
+        <h2>Top Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in user_reports %}
+                <tr>
+                    <td>{{ report['username'] }}</td>
+                    <td>{{ report['order_count'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- گزارش وضعیت سفارش‌ها -->
+    <section>
+        <h2>Order Status Report</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in order_status_reports %}
+                <tr>
+                    <td>{{ report['status'] }}</td>
+                    <td>{{ report['count'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+</body>
+</html>

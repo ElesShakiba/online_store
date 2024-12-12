@@ -1,0 +1,258 @@
+.header {
+    background: linear-gradient(135deg, #4a0606, #e4e4e4); /* رنگ‌های دلخواه */
+    height: 150px; /* ارتفاع هدر */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 2.5em; /* اندازه متن */
+    font-family: "Shadows Into Light", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+.container {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: absolute; /* Center the form */
+    top: 50%;
+    left: 50%;
+    transform: translate(-60%, -50%);
+    z-index: 2; /* Ensure form is above images */
+}
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #471501;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn:hover {
+    background-color: #a0522d;
+}
+.form-container {
+    display: none;
+    margin-top: 20px;
+    text-align: left;
+}
+.form-container form {
+    background-color: #ceaba3;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 2px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.submit-btn {
+    background-color: #8b4513;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+.submit-btn:hover {
+    background-color: #a0522d;
+}
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 2px;
+    display: none;
+}
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 5 images per row */
+    gap: 5px 5px; /* Space between images */
+    margin: 10px; /* Margin around the image container */
+    padding: 0 20px; /* Padding inside the image container */
+}
+.image {
+    position: relative;
+    overflow: hidden; /* Ensure the image scales properly */
+    border-radius: 2px;
+    transition: transform 0.3s; /* Scale effect on hover */
+}
+.image img {
+    width: 100%; /* Set the image width to be responsive */
+    height: auto; /* Maintain aspect ratio */
+    transition: transform 0.3s; /* Transition effect for scaling */
+}
+.image:hover {
+    transform: scale(1.05); /* Scale up the image on hover */
+}
+
+.image:nth-child(1) {
+    margin-top: 65px; /* فاصله بالای تصویر ششم */
+}
+.image:nth-child(6) {
+    margin-top: 45px; /* فاصله بالای تصویر ششم */
+}
+.image:nth-child(2) {
+    margin-top: 30px; /* فاصله بالای تصویر ششم */
+}
+.image:nth-child(3) {
+    margin-top: 10px; /* فاصله بالای تصویر ششم */
+}
+
+.shadows-into-light-regular {
+    font-family: "Shadows Into Light", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    opacity: 0.7; /* حالت محو اولیه */
+    transition: opacity 0.3s ease; /* انیمیشن محو شدن */
+}
+
+.image:hover {
+    opacity: 1; /* حالت واضح هنگام هاور */
+}
+
+.success-message {
+    background-color: #dff0d8; /* رنگ پس‌زمینه سبز روشن */
+    color: #3c763d; /* رنگ متن */
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    transition: opacity 0.3s ease; /* انیمیشن محو */
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f4f4f4;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5dc;
+}
+.container {
+    padding: 20px;
+    text-align: center;
+}
+h1 {
+    color: #370b0b;
+}
+.dashboard-btn {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #8b4513;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    text-align: center;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar ul li a:hover {
+    background-color: #444;
+}
+
+
+.notification {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    margin-top: 10px;
+}
+.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.collapsible {
+    display: none; /* پیش‌فرض مخفی است */
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    
+
+}
+
+.toggle-btn {
+    background-color: #4a0606;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.toggle-btn:hover {
+    background-color: #6b0c0c;
+}
+

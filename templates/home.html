@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Store</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+
+<body onclick="closeForms(event)">
+    <div class="header">
+        <h1>Welcome to ELES SHOP</h1>
+    </div>
+    <div class="container" onclick="event.stopPropagation()">
+        <button class="btn" onclick="toggleForm('loginForm')">Login</button>
+        <button class="btn" onclick="toggleForm('signupForm')">Sign Up</button>
+        <div id="loginForm" class="form-container">
+            <form action="/login" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+
+        <div id="signupForm" class="form-container">
+            <form action="/signup" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" required>
+                
+                <label for="user-role">Select Role:</label>
+                <select id="user-role" name="role" onchange="togglePasswordField()">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <span id="error-message" class="error-message">Admin password incorrect.</span>
+
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="image-container">
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo1.jpg') }}" alt="Image 1">
+
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo2.jpg') }}" alt="Image 2">
+
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo3.jpg') }}" alt="Image 3">
+
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo4.jpg') }}" alt="Image 4">
+
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo5.jpg') }}" alt="Image 5">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo6.jpg') }}" alt="Image 6">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo7.jpg') }}" alt="Image 7">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo8.jpg') }}" alt="Image 8">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo9.jpg') }}" alt="Image 9">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo10.jpg') }}" alt="Image 10">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo11.jpg') }}" alt="Image 11">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo12.jpg') }}" alt="Image 12">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo13.jpg') }}" alt="Image 13">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo14.jpg') }}" alt="Image 14">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo15.jpg') }}" alt="Image 15">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo16.jpg') }}" alt="Image 16">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo17.jpg') }}" alt="Image 17">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo18.jpg') }}" alt="Image 18">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo19.jpg') }}" alt="Image 19">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo20.jpg') }}" alt="Image 20">
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='images/photo21.jpg') }}" alt="Image 21">
+        </div>
+    </div>
+    <div id="successMessage" class="success-message" style="display: none;">
+        <p>Registration was successful</p>
+    </div>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #4a0606, #4a0606);
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #4a0606;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #700a0a;
+        }
+
+        .form-container {
+            display: none;
+            margin: 20px auto;
+            padding: 20px;
+            width: 300px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .success-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+
+    <script>
+        function toggleForm(formId) {
+            const form = document.getElementById(formId);
+            const otherForm = formId === 'loginForm' ? document.getElementById('signupForm') : document.getElementById('loginForm');
+
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+                otherForm.style.display = 'none';
+            }
+        }
+
+        function togglePasswordField() {
+            const userRole = document.getElementById('user-role').value;
+            const passwordField = document.getElementById('signup-password');
+            passwordField.value = ''; // Clear the field for both admin and user
+        }
+
+        function validateSignupForm() {
+            const userRole = document.getElementById('user-role').value;
+            const passwordField = document.getElementById('signup-password');
+            const errorMessage = document.getElementById('error-message');
+
+            if (userRole === 'admin' && passwordField.value !== 'admin123') {
+                errorMessage.style.display = 'block';
+                return false;
+            }
+
+            errorMessage.style.display = 'none';
+            return true;
+        }
+
+
+        function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Mock login check
+            if (email === "test@example.com" && password === "password") {
+                alert("Login successful!");
+                return true;
+            } else {
+                alert("Invalid credentials!");
+                return false;
+            }
+        }
+
+        function closeForms(event) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => form.style.display = 'none');
+        }
+
+        function validateSignupForm() {
+            const userRole = document.getElementById('user-role').value;
+            const passwordField = document.getElementById('signup-password');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('successMessage');
+
+            if (userRole === 'admin' && passwordField.value !== 'admin123') {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none'; // مخفی کردن پیام موفقیت
+                return false;
+            }
+
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'block'; // نمایش پیام موفقیت
+            return true;
+        }
+        function closeForms(event) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            if (loginForm.style.display === 'block') {
+                loginForm.style.display = 'none';
+            }
+            if (signupForm.style.display === 'block') {
+                signupForm.style.display = 'none';
+            }
+        }
+
+    </script>
+</body>
+
+</html>

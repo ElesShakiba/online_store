@@ -1,0 +1,116 @@
+<!--
+
+            <div class="separator"></div>
+            <div class="separator"></div>
+
+
+
+            <div class="product">
+                <h3>Sneakers adidas Samba XLG White</h3>
+                <div class="product-gallery">
+                    <img src="{{ url_for('static', filename='uploads/Samba.jpg') }}" alt="Product Image 2" style="width: 100%; height: auto;">
+                    
+                </div>
+                <p>adidas, a powerhouse in the world of sportswear, was founded in Germany with a vision that seamlessly blends performance and style.</p>
+                <p><strong>Price: € 97.50</strong></p>
+            </div>
+            <div class="separator"></div>
+
+            <div class="product">
+                <h3>Vans Womens Ward Platform Canvas Trainers</h3>
+                <div class="product-gallery">
+                    <img src="{{ url_for('static', filename='uploads/vans.jpg') }}" alt="Product Image 2" style="width: 100%; height: auto;">
+                    
+                </div>
+                <p>Vans Vans Trainers China Product Information Vans Womens Ward Platform Canvas Trainers (Black) zoom_in Vans Womens Ward Platform Canvas Trainers (Black) Style Code: VN0A3TLC187 These lace-up Vans Ward Platform Canvas Trainers have a textile upper and are black</p>
+                <p><strong>Price: £64.99</strong></p>
+            </div>
+
+            <div class="separator"></div>
+            <div class="separator"></div>
+        
+        
+            
+            <div class="category">
+            
+
+                <div class="product">
+                    <h3>earing</h3>
+                    <div class="product-gallery">
+                        
+                        <img src= "{{ url_for('static', filename='uploads/Earrings.jpg ') }}" alt="Product Image 1" style="width: 100%; height: auto;">
+                    </div>
+                    <p>earring</p>
+                    <p><strong>Price: £62.00</strong></p>
+                </div>
+                <div class="separator"></div>
+                <div class="product">
+                    <h3>Bangle</h3>
+                    <div class="product-gallery">
+                        
+                        <img src= "{{ url_for('static', filename='uploads/Bangle.jpg ') }}" alt="Product Image 1" style="width: 100%; height: auto;">
+                    </div>
+                    <p>Bangle</p>
+                    <p><strong>Price: £62.00</strong></p>
+                </div>
+                <div class="separator"></div>
+                <div class="product">
+                    <h3>Stackable</h3>
+                    <div class="product-gallery">
+                        
+                        <img src= "{{ url_for('static', filename='uploads/Stackable1.jpg ') }}" alt="Product Image 1" style="width: 100%; height: auto;">
+                    </div>
+                    <p>Stackable</p>
+                    <p><strong>Price: £62.00</strong></p>
+                </div>
+                <div class="separator"></div>
+            </div>
+        -->
+
+
+        <div class="category">
+            {% for product in products %}
+            <div class="product">
+                <h3>{{ product['name'] }}</h3>
+                <div class="product-gallery">
+                    <img src="{{ url_for('static', filename= product['image_path']) }}"
+                        alt="{{ product['name'] }}" style="width: 100%; height: auto;">
+                </div>
+                <p>{{ product['description'] }}</p>
+                <p><strong>${{ product['price'] }}</strong></p>
+            </div>
+            {% endfor %}
+
+
+
+            {% for product in products %}
+            <div class="product">
+                <h3>{{ product.name }}</h3>
+                <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}"
+                    alt="{{ 'product.name' }}" class="product-image" onclick="addToCart({{ product.id }})">
+                <p>{{ product.description }}</p>
+                <p><strong>${{ product.price }}</strong></p>
+            </div>
+            {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            @app.route('/delete_order/<int:order_id>', methods=['DELETE'])
+def delete_order(order_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM orders WHERE order_id = ?', (order_id,))
+    conn.commit()
+    return jsonify({'message': 'Order deleted successfully'}), 200
