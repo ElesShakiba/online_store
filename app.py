@@ -304,14 +304,14 @@ def user_dashboard():
 
         # دریافت سفارشات با نام محصول
         cursor.execute('''
-            SELECT o.id AS order_id, p.name AS product_name, o.status, p.price AS product_price, p.image_path
+            SELECT o.id AS order_id, p.name AS product_name,o.quantity, o.status, p.price AS product_price, p.image_path
             FROM orders o
             JOIN products p ON o.product_id = p.id
             WHERE o.username = ?
         ''', (username,))
         orders = cursor.fetchall()
         cursor.execute('''
-            SELECT COALESCE(SUM(p.price), 0)
+            SELECT COALESCE(SUM(p.price* o.quantity), 0)
             FROM orders o
             JOIN products p ON o.product_id = p.id
             WHERE o.username = ?
@@ -466,7 +466,7 @@ def order():
     if 'role' in session and session['role'] == 'user':
         username = session.get('username')
         product_id = request.form.get('product_id')  # دریافت product_id از فرم
-        
+        quantity = int(request.form.get('quantity',1))
         conn = get_db()
         cursor = conn.cursor()
 
@@ -486,9 +486,9 @@ def order():
 
         # ثبت سفارش در جدول orders
         cursor.execute('''
-            INSERT INTO orders (username, product_id, status, total_price)
-            VALUES (?, ?, ?, ?)
-        ''', (username, product_id, 'Pending', product_price))
+            INSERT INTO orders (username, product_id, status, total_price,quantity)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (username, product_id, 'Pending', product_price,quantity))
 
         conn.commit()
         conn.close()
