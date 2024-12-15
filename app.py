@@ -165,8 +165,10 @@ def admin_orders():
 # ------------------ Admin Dashboard ------------------
 @app.route('/admin_dashboard')
 def admin_dashboard():
-    if 'role' in session and session['role'].strip().lower() == 'admin':
+    if 'role' in session and session['role'].strip().lower() == 'admin' and 'password' in session and session['password'] == '220034':
         return render_template ('admin_dashboard.html')
+    else:
+        return ('password not correct')
 
 
 # مدیریت کاربران
@@ -614,10 +616,14 @@ def add_to_order():
 
     return redirect('/user_dashboard')  # بازگشت به داشبورد کاربر
 
+@app.route('/payment_gateway')
+def payment_gateway():
+    return "Secure Payment Gateway Coming Soon!"
+
 
 
 if __name__ == '__main__':
     create_user_table()
     create_product_table()
     create_order_table()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
