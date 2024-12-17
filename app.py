@@ -302,6 +302,18 @@ def user_dashboard():
 
         # دریافت محصولات
         cursor.execute("SELECT id, name, description, price, image_path FROM products")
+                # دریافت محصولات با وضعیت علاقه‌مندی
+        cursor.execute('''
+            SELECT 
+                p.id, 
+                p.name, 
+                p.description, 
+                p.price, 
+                p.image_path, 
+                CASE WHEN w.product_id IS NOT NULL THEN 1 ELSE 0 END AS in_wishlist
+            FROM products p
+            LEFT JOIN wishlist w ON p.id = w.product_id AND w.user_id = ?
+        ''', (username,))
         products = cursor.fetchall()
 
         # دریافت سفارشات با نام محصول
@@ -514,6 +526,12 @@ def delete_order(order_id):
 
 
 
+
+
+
+
+
+
 def create_order_table():
     conn = get_db()
     cursor = conn.cursor()
@@ -619,6 +637,138 @@ def add_to_order():
 @app.route('/payment_gateway')
 def payment_gateway():
     return "Secure Payment Gateway Coming Soon!"
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if 'role' in session and session['role'] == 'user':
+        username = session.get('username')
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        message = None
+        # دریافت اطلاعات کاربر قبل از متد POST
+        cursor.execute('''
+            SELECT username, email FROM users WHERE username = ?
+        ''', (username,))
+        user_info = cursor.fetchone()
+
+        if request.method == 'POST':
+            new_username = request.form.get('username')
+            new_email = request.form.get('email')
+            new_password = request.form.get('password')
+
+            # به‌روزرسانی اطلاعات کاربر
+            cursor.execute('''
+                UPDATE users 
+                SET username = ?, email = ?, password = ?
+                WHERE username = ?
+            ''', (new_username, new_email, new_password, username))
+
+            conn.commit()
+            session['username'] = new_username  # به‌روزرسانی سشن
+            message = "Profile updated successfully!"
+
+            # به‌روزرسانی اطلاعات کاربر برای نمایش
+            user_info = (new_username, new_email)
+
+        conn.close()
+        return render_template('profile.html', user=user_info, message=message)
+    return "Access Denied", 403
+
+@app.route('/add_to_wishlist', methods=['POST'])
+def add_to_wishlist():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        product_id = request.form['product_id']
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        # بررسی وجود محصول در wishlist
+        cursor.execute('SELECT COUNT(*) FROM wishlist WHERE user_id = ? AND product_id = ?', (user_id, product_id))
+        if cursor.fetchone()[0] > 0:
+            conn.close()
+            return jsonify({'message': 'Product already in wishlist!'})
+
+        # اضافه کردن محصول به wishlist
+        cursor.execute('INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)', (user_id, product_id))
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Product added to wishlist!'})
+    return jsonify({'error': 'Unauthorized'}), 401
+
+
+@app.route('/wishlist')
+def wishlist():
+    if 'role' in session and session['role'] == 'user':
+        username = session.get('username')
+        
+        conn = get_db()
+        cursor = conn.cursor()
+
+        # پیدا کردن user_id از نام کاربری
+        cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+        username = cursor.fetchone()[0]
+
+        # دریافت محصولات از لیست علاقه‌مندی‌ها
+        cursor.execute('''
+            SELECT p.id, p.name, p.description, p.price, p.image_path
+            FROM wishlist w
+            JOIN products p ON w.product_id = p.id
+            WHERE w.user_id = ?
+        ''', (username,))
+        
+        wishlist_products = cursor.fetchall()
+        conn.close()
+
+        return render_template('wishlist.html', wishlist_products=wishlist_products)
+    return "Access denied!", 403
+
+@app.route('/toggle_wishlist/<int:product_id>', methods=['POST'])
+def toggle_wishlist(product_id):
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'Not logged in'}), 401
+
+    user_id = session['user_id']
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # بررسی وجود محصول در علاقه‌مندی
+    cursor.execute('SELECT 1 FROM wishlist WHERE user_id = ? AND product_id = ?', (user_id, product_id))
+    exists = cursor.fetchone()
+
+    if exists:
+        # حذف از علاقه‌مندی
+        cursor.execute('DELETE FROM wishlist WHERE user_id = ? AND product_id = ?', (user_id, product_id))
+    else:
+        # اضافه کردن به علاقه‌مندی
+        cursor.execute('INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)', (user_id, product_id))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True})
+
+
+
+@app.route('/delete_wishlist/<int:product_id>', methods=['POST'])
+def delete_wishlist(product_id):
+    if 'role' in session and session['role'] == 'user':
+        user_id = session.get('user_id')  # گرفتن نام کاربری از سشن
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        # حذف محصول از ویش‌لیست کاربر
+        cursor.execute("DELETE FROM wishlist WHERE user_id = ? AND product_id = ?", (user_id, product_id))
+        conn.commit()
+        conn.close()
+
+        flash("Product removed from wishlist!", "success")
+        return redirect(url_for('wishlist'))  # بازگشت به صفحه ویش‌لیست
+    else:
+        return "Access Denied", 403
 
 
 

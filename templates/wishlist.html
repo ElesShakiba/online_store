@@ -579,32 +579,6 @@
         .wishlist-icon.not-in-wishlist {
             color: gray;
         }
-        .alert {
-            padding: 10px 15px;
-            margin: 10px 0;
-            border: 1px solid transparent;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        
-        .alert-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-        
-        .alert-info {
-            color: #0c5460;
-            background-color: #d1ecf1;
-            border-color: #bee5eb;
-        }
-        
 
 
 
@@ -628,10 +602,6 @@
 
 
 
-
-
-
-
 <body>
 
     <header>
@@ -639,10 +609,6 @@
     </header>
     <div class="main-content">
         <h1>Welcome,{{ session['username'] }}</h1>
-
-
-
-
 
         <!-- Profile Section -->
         <div class="card">
@@ -716,48 +682,16 @@
 
 
                 </div>
-                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/wishlist'">My Wishlist</button>
-
-                <div id="wishList" style="display: none; margin-top: 20px;"></div>
-                <div class="product-container">
-                    {% for product in wishlist %}
-                    <div class="product">
-                        <h3>{{ product['name'] }}</h3>
-                        <form action="/add_to_wishlist" method="POST">
-                            <input type="hidden" name="product_name" value="{{ product.name }}">
-                            <button type="submit">Add to Wishlist</button>
-                        </form>
-
-                        <div class="product-gallery">
-                            <img src="{{ url_for('static', filename=product['image_path']) }}"
-                                alt="{{ product['username'] }}" style="width: 100%; height: auto;">
-                        </div>
-                        <p>{{ product['description'] }}</p>
-                        <p><strong>${{ product['price'] }}</strong></p>
-
-                        <form action="/order" method="POST">
-                            <input type="hidden" name="product_id" value="{{ product['id'] }}">
-                            <label for="quantity">Quantity:</label>
-                            <input type="number" id="quantity" name="quantity" value="1" min="1" required>
-                            <button type="submit">Order Now</button>
-                        </form>
-                        {% if product.in_wishlist == 1 %}
-                        <div class="wishlist-icon in-wishlist">!</div>
-                        {% else %}
-                        <div class="wishlist-icon not-in-wishlist">♡</div>
-                        {% endif %}
-
-                    </div>
-                    {% endfor %}
-                </div>
-
 
                 <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/profile'">Manage Profile</button>
+                
+                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/user_dashboard'">Back To Home</button>
 
 
 
+                
                 <div class="product-container">
-                    {% for product in products %}
+                    {% for product in wishlist_products %}
                     <div class="product">
                         <h3>{{ product['name'] }}</h3>
                         <div class="product-gallery">
@@ -773,10 +707,19 @@
                             <input type="number" id="quantity" name="quantity" value="1" min="1" required>
                             <button type="submit" class="btn btn-primary">Order Now</button>
                         </form>
-                        <form action="/add_to_wishlist" method="POST">
-                            <input type="hidden" name="product_id" value="{{ product.id }}">
-                            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
+                        <form action="{{ url_for('delete_wishlist', product_id=product['id']) }}" method="POST">
+                            <button type="submit" class="btn btn-primary">Delete from Wishlist</button>
                         </form>
+
+
+
+                        
+
+
+
+
+
+
                         {% if product.in_wishlist == 1 %}
                         <div class="wishlist-icon in-wishlist">!</div>
                         {% else %}
@@ -787,18 +730,6 @@
                     </div>
                     {% endfor %}
                 </div>
-
-
-                <!-- نمایش پیام‌های flash -->
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
 
 
 
@@ -863,71 +794,7 @@
                     toggleBtn.textContent = 'My Orders';
                 }
             });
-            document.getElementById('wishlist-toggle').addEventListener('click', function () {
-                var wishlistSection = document.getElementById('wishlist-section');
-
-                if (wishlistSection.style.display === 'none') {
-                    // بارگذاری محصولات لیست علاقه‌مندی‌ها از API
-                    fetch('/wishlist_data')
-                        .then(response => response.json())
-                        .then(data => {
-                            var wishlistProducts = document.getElementById('wishlist-products');
-                            wishlistProducts.innerHTML = ''; // پاک کردن محتوای قبلی
-                            if (data.length > 0) {
-                                data.forEach(product => {
-                                    var productDiv = document.createElement('div');
-                                    productDiv.classList.add('product');
-                                    productDiv.innerHTML = `
-                                                <img src="${product.image_path}" alt="${product.name}">
-                                                <h4>${product.name}</h4>
-                                                <p>${product.description}</p>
-                                                <p>$${product.price}</p>
-                                            `;
-                                    wishlistProducts.appendChild(productDiv);
-                                });
-                            } else {
-                                wishlistProducts.innerHTML = '<p>Your wishlist is empty.</p>';
-                            }
-                        });
-
-                    wishlistSection.style.display = 'block'; // نمایش بخش لیست علاقه‌مندی‌ها
-                } else {
-                    wishlistSection.style.display = 'none'; // پنهان کردن بخش لیست علاقه‌مندی‌ها
-                }
-            });
-            document.querySelectorAll('.wishlist-icon').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    const productId = this.dataset.productId;
-                    const isInWishlist = this.classList.contains('in-wishlist');
-
-                    fetch(`/toggle_wishlist/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ in_wishlist: !isInWishlist })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // به‌روزرسانی کلاس‌ها برای نمایش تغییر
-                                if (isInWishlist) {
-                                    this.classList.remove('in-wishlist');
-                                    this.classList.add('not-in-wishlist');
-                                    this.textContent = '♡';
-                                } else {
-                                    this.classList.remove('not-in-wishlist');
-                                    this.classList.add('in-wishlist');
-                                    this.textContent = '❤️';
-                                }
-                            } else {
-                                alert('Failed to update wishlist status');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
-
+ 
 
             function toggleSection(sectionId, buttonId, apiUrl = null) {
                 const section = document.getElementById(sectionId);
@@ -964,30 +831,6 @@
                     button.textContent = button.textContent.replace('Hide', 'Show');
                 }
             }
-
-            fetch('/add_to_wishlist', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ product_id: productId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message); // پیام "Product already in wishlist!" یا "Product added to wishlist!"
-                })
-                .catch(error => console.error('Error:', error));
-
-                    // بسته شدن خودکار پیام بعد از 3 ثانیه
-                    setTimeout(function() {
-                        let alerts = document.querySelectorAll('.alert');
-                        alerts.forEach(alert => {
-                            alert.style.display = 'none';
-                        });
-                    }, 3000);
-
-                
-
 
 
 

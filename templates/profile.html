@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: #a47864;
+            margin-top: 80px;
+            /* به اندازه ارتفاع هدر فضای بالای صفحه را خالی می‌کنیم */
+        }
+
+        .profile-container {
+            width: 50%;
+            margin: 20px auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-form label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        .profile-form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .profile-form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #a47864;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .profile-form button:hover {
+            background-color: #45a049;
+        }
+        
+        .success-message {
+            color: green;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        header {
+            color: white;
+            /* رنگ متن */
+            text-align: left;
+            /* وسط‌چین کردن متن */
+            padding: 30px 10;
+            /* فاصله داخلی */
+            position: fixed;
+            /* برای ثابت نگه داشتن هدر در بالای صفحه */
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* تمام عرض صفحه را بگیرد */
+            background-color: #a47864;
+            /* رنگ پس زمینه */
+            color: #4f392e;
+            /* رنگ متن */
+            z-index: 1000;
+            /* برای اطمینان از اینکه هدر از دیگر بخش‌ها بالاتر باشد */
+            transition: all 0.4s ease-in-out;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Profile Management</title>
+</head>
+<body>
+    <header>
+        <button id="toggleProfileBtn"  onclick="location.href='/user_dashboard'">back to home</button>
+    </header>
+    
+    <div class="profile-container">
+        <h2>Manage Your Profile</h2>
+
+        {% if message %}
+        <p class="success-message">{{ message }}</p>
+        {% endif %}
+        <form action="/profile" method="POST" class="profile-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user[0] }}" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user[1] }}" required>
+            
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter new password">
+            
+            <button type="submit">Update Profile</button>
+
+        
+        </form>
+        
+    </div>
+    
+
+
+
+    
+    
+</body>
+</html>

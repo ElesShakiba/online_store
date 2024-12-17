@@ -4,14 +4,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Online Store</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* برای صفحه‌های کوچک (مثلاً موبایل‌ها) */
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+        }
+
+        /* برای صفحه‌های بزرگتر */
+        @media (min-width: 601px) {
+            body {
+                font-size: 16px;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background:#a47864;
+            color: white;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #a47864, #e4e4e4); /* رنگ‌های دلخواه */
+            height: 110px; /* ارتفاع هدر */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 2.5em; /* اندازه متن */
+            font-family: "Shadows Into Light", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color:#a47864;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #886454;
+        }
+
+        .form-container {
+            display: none;
+            margin: 20px auto;
+            padding: 20px;
+            width: 300px;
+            background-color: #fff;
+            color: #000;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .success-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+        
+    </style>
 
 </head>
+
 
 <body onclick="closeForms(event)">
     <div class="header">
@@ -36,10 +131,10 @@
             <form action="/signup" method="POST">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
-                
+
                 <label for="email">Email:</label>
                 <input type="text" id="email" name="email" required>
-                
+
                 <label for="user-role">Select Role:</label>
                 <select id="user-role" name="role" onchange="togglePasswordField()">
                     <option value="user">User</option>
@@ -127,74 +222,7 @@
     <div id="successMessage" class="success-message" style="display: none;">
         <p>Registration was successful</p>
     </div>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            background: linear-gradient(135deg, #4a0606, #4a0606);
-            color: white;
-        }
 
-        .header {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .btn {
-            background-color: #4a0606;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #700a0a;
-        }
-
-        .form-container {
-            display: none;
-            margin: 20px auto;
-            padding: 20px;
-            width: 300px;
-            background-color: #fff;
-            color: #000;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .form-container input,
-        .form-container select,
-        .form-container button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-        }
-
-        .success-message {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 0.9em;
-            display: none;
-        }
-    </style>
 
     <script>
         function toggleForm(formId) {
