@@ -606,6 +606,92 @@
             border-color: #bee5eb;
         }
 
+        /* Container for the categories list */
+        ul.btn.btn-primary {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Style for each category item */
+        ul.btn.btn-primary li {
+            margin: 10px;
+        }
+
+        /* Style for category links */
+        ul.btn.btn-primary li a {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #7d5a4a;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        /* Hover effect for links */
+        ul.btn.btn-primary li a:hover {
+            background-color: #7d5a4a;
+            transform: translateY(-5px);
+        }
+
+        /* Hover effect for links when active or focused */
+        ul.btn.btn-primary li a:active,
+        ul.btn.btn-primary li a:focus {
+            background-color: #003f7f;
+            outline: none;
+            transform: translateY(0);
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            ul.btn.btn-primary {
+                flex-direction: column;
+            }
+
+            ul.btn.btn-primary li {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* استایل دکمه برگشت */
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #7d5a4a;
+            /* رنگ سبز برای دکمه برگشت */
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        /* افکت هاور روی دکمه برگشت */
+        .btn-back:hover {
+            background-color: #7d5a4a;
+            transform: translateY(-5px);
+        }
+
+        /* افکت روی دکمه برگشت زمانی که فعال یا فکوس شده است */
+        .btn-back:active,
+        .btn-back:focus {
+            background-color: #7d5a4a;
+            transform: translateY(0);
+        }
+
+
+
 
 
 
@@ -766,7 +852,12 @@
                         </a>
                     </li>
                     {% endfor %}
+
+                {% if category_id %}    
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-back">Back</a>
+                {% endif %}
                 </ul>
+                
 
 
 

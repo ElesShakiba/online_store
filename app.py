@@ -411,24 +411,23 @@ def get_products():
     conn.close()
     return render_template('user_dashboard.html', products=products)
 
-@app.route('/products/<int:category_id>')
+
+
+@app.route('/category/<int:category_id>')
 def products_by_category(category_id):
     conn = get_db()
     cursor = conn.cursor()
 
-    # واکشی نام دسته و محصولات آن
+    # دریافت اطلاعات دسته‌بندی از پایگاه داده
     cursor.execute("SELECT name FROM categories WHERE id = ?", (category_id,))
     category = cursor.fetchone()
 
     cursor.execute('''
-        SELECT id, name, description, price, image_path
-        FROM products WHERE category_id = ?
+        SELECT * FROM products WHERE category_id = ?
     ''', (category_id,))
     products = cursor.fetchall()
-    conn.close()
 
-    return render_template('user_dashboard.html', category=category, products=products)
-
+    return render_template('user_dashboard.html', products=products, category_id=category_id)
 
 @app.route('/manage_products', methods=['GET', 'POST'])
 def manage_products():
