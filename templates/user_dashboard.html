@@ -579,6 +579,7 @@
         .wishlist-icon.not-in-wishlist {
             color: gray;
         }
+
         .alert {
             padding: 10px 15px;
             margin: 10px 0;
@@ -586,25 +587,25 @@
             border-radius: 5px;
             font-size: 14px;
         }
-        
+
         .alert-success {
             color: #155724;
             background-color: #d4edda;
             border-color: #c3e6cb;
         }
-        
+
         .alert-error {
             color: #721c24;
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
-        
+
         .alert-info {
             color: #0c5460;
             background-color: #d1ecf1;
             border-color: #bee5eb;
         }
-        
+
 
 
 
@@ -649,7 +650,8 @@
             <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="Account Icon">
             <h3>Welcome,{{ session['username'] }}</h3>
             <p>Email: {{ session['email'] }}</p>
-            <p>Joined: [Join Date]</p>
+
+
 
 
             <!-- Orders Section -->
@@ -716,7 +718,8 @@
 
 
                 </div>
-                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/wishlist'">My Wishlist</button>
+                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/wishlist'">My
+                    Wishlist</button>
 
                 <div id="wishList" style="display: none; margin-top: 20px;"></div>
                 <div class="product-container">
@@ -752,7 +755,18 @@
                 </div>
 
 
-                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/profile'">Manage Profile</button>
+                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/profile'">Manage
+                    Profile</button>
+                <h1>Categories</h1>
+                <ul class="btn btn-primary">
+                    {% for category in categories %}
+                    <li>
+                        <a href="{{ url_for('products_by_category', category_id=category['id']) }}">
+                            {{ category['name'] }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
 
 
 
@@ -978,15 +992,15 @@
                 })
                 .catch(error => console.error('Error:', error));
 
-                    // بسته شدن خودکار پیام بعد از 3 ثانیه
-                    setTimeout(function() {
-                        let alerts = document.querySelectorAll('.alert');
-                        alerts.forEach(alert => {
-                            alert.style.display = 'none';
-                        });
-                    }, 3000);
+            // بسته شدن خودکار پیام بعد از 3 ثانیه
+            setTimeout(function () {
+                let alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    alert.style.display = 'none';
+                });
+            }, 3000);
 
-                
+
 
 
 

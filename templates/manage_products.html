@@ -188,7 +188,18 @@
             
                 <label for="image_path">Upload Image:</label>
                 <input type="file" id="image_path" name="image_path" accept="image/*" required>
-               
+                <div>
+                    <label for="category_id">Category</label>
+                    <select name="category_id" id="category_id">
+                        {% for category in categories %}
+                            <option value="{{ category.name }}" {% if category.id == product.category_id %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                
                 <button type="submit">Add Product</button>
             </form>
 
@@ -205,6 +216,7 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Image</th>
+                <th>categorie</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -216,6 +228,7 @@
                 <td>{{ product[2] }}</td>
                 <td>${{ product[3] }}</td>
                 <td><img src="{{ url_for('static', filename=product[4]) }}" alt="Image" width="100"></td>
+                <td>{{product[5]}}</td>
                 <td>
                     <a href="/edit_product/{{ product[0] }}">Edit</a>
                     <a href="/delete_product/{{ product[0] }}" onclick="return confirm('Are you sure?')">Delete</a>

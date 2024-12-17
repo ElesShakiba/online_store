@@ -331,9 +331,11 @@ def user_dashboard():
             WHERE o.username = ?
         ''', (username,))
         total_price = cursor.fetchone()[0]
-
+        cursor.execute("SELECT id, name FROM categories")
+        categories = cursor.fetchall()
         conn.close()
-        return render_template('user_dashboard.html', products=products, orders=orders,total_price=total_price)
+
+        return render_template('user_dashboard.html', products=products, orders=orders,total_price=total_price,categories=categories)
     elif 'role' in session and session['role'] == 'admin':
         return redirect('/admin_dashboard')
     return "Access denied!", 403
@@ -370,25 +372,35 @@ def add_product(name, description, price, stock, category_id,image_path):
     conn.commit()
     conn.close()
 
-@app.route('/add_product', methods=['POST'])
-def add_product_route():
-    product_data = request.get_json()
-    file = request.files['image']
-    if file:
-        filename = file.filename
-        filepath = os.path.join('static/uploads', filename)
-        file.save(filepath)  # ذخیره فایل در سرور
-        image_path = 'uploads/' + filename
-    add_product(
-        product_data.get('name'),
-        product_data.get('description', ''),
-        product_data.get('price'),
-        product_data.get('stock'),
-        product_data.get('category_id'),
-        product_data.get('image_path')
-    )
+@app.route('/add_product', methods=['GET', 'POST'])
+def add_product():
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        price = request.form['price']
+        image_path = request.form['image_path']
+        category_id = request.form['category_id']  # دسته‌بندی محصول
 
-    return jsonify({"message": "Product added successfully!"}), 201
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO products (name, description, price, image_path, category_id)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (name, description, price, image_path, category_id))
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Product added successfully!'})
+
+    # دریافت دسته‌بندی‌ها برای نمایش در فرم
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name FROM categories")
+    categories = cursor.fetchall()
+    conn.close()
+
+    return render_template('add_product.html', categories=categories)
+
 
 @app.route('/products', methods=['GET'])
 def get_products():
@@ -398,6 +410,25 @@ def get_products():
     products = cursor.fetchall()
     conn.close()
     return render_template('user_dashboard.html', products=products)
+
+@app.route('/products/<int:category_id>')
+def products_by_category(category_id):
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # واکشی نام دسته و محصولات آن
+    cursor.execute("SELECT name FROM categories WHERE id = ?", (category_id,))
+    category = cursor.fetchone()
+
+    cursor.execute('''
+        SELECT id, name, description, price, image_path
+        FROM products WHERE category_id = ?
+    ''', (category_id,))
+    products = cursor.fetchall()
+    conn.close()
+
+    return render_template('user_dashboard.html', category=category, products=products)
+
 
 @app.route('/manage_products', methods=['GET', 'POST'])
 def manage_products():
@@ -440,28 +471,42 @@ def edit_product(product_id):
     conn = get_db()
     cursor = conn.cursor()
 
+    # گرفتن دسته‌بندی‌ها
+    cursor.execute('SELECT * FROM categories')
+    categories = cursor.fetchall()
+
     if request.method == 'GET':
+        # گرفتن محصول از دیتابیس
         cursor.execute('SELECT * FROM products WHERE id = ?', (product_id,))
         product = cursor.fetchone()
-        return render_template('edit_product.html', product=product)
+        return render_template('edit_product.html', product=product, categories=categories)
 
     if request.method == 'POST':
         name = request.form.get('name')
         description = request.form.get('description')
         price = request.form.get('price')
+        category_id = request.form.get('category_id')  # گرفتن دسته‌بندی از فرم
         file = request.files['image_path']
-        
+
+        # ذخیره تصویر اگر جدید باشد
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image_path = f'uploads/{filename}'
-            cursor.execute('''
-                UPDATE products
-                SET name = ?, description = ?, price = ?, image_path = ?
-                WHERE id = ?
-            ''', (name, description, float(price), image_path, product_id))
-            conn.commit()
-            return redirect('/manage_products')
+        else:
+            # در صورتی که تصویر جدیدی آپلود نشده باشد، تصویر قبلی را نگه دارید
+            cursor.execute('SELECT image_path FROM products WHERE id = ?', (product_id,))
+            image_path = cursor.fetchone()[0]
+
+        cursor.execute(''' 
+            UPDATE products 
+            SET name = ?, description = ?, price = ?, image_path = ?, category_id = ?
+            WHERE id = ?
+        ''', (name, description, float(price), image_path, category_id, product_id))
+        
+        conn.commit()
+        return redirect('/manage_products')
+
 
 @app.route('/delete_product/<int:product_id>', methods=['GET'])
 def delete_product(product_id):
