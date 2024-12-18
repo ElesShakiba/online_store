@@ -580,119 +580,6 @@
             color: gray;
         }
 
-        .alert {
-            padding: 10px 15px;
-            margin: 10px 0;
-            border: 1px solid transparent;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-
-        .alert-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-
-        .alert-info {
-            color: #0c5460;
-            background-color: #d1ecf1;
-            border-color: #bee5eb;
-        }
-
-        /* Container for the categories list */
-        ul.btn.btn-primary {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        /* Style for each category item */
-        ul.btn.btn-primary li {
-            margin: 10px;
-        }
-
-        /* Style for category links */
-        ul.btn.btn-primary li a {
-            display: inline-block;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #7d5a4a;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        /* Hover effect for links */
-        ul.btn.btn-primary li a:hover {
-            background-color: #7d5a4a;
-            transform: translateY(-5px);
-        }
-
-        /* Hover effect for links when active or focused */
-        ul.btn.btn-primary li a:active,
-        ul.btn.btn-primary li a:focus {
-            background-color: #003f7f;
-            outline: none;
-            transform: translateY(0);
-        }
-
-        /* Media query for smaller screens */
-        @media (max-width: 600px) {
-            ul.btn.btn-primary {
-                flex-direction: column;
-            }
-
-            ul.btn.btn-primary li {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        /* استایل دکمه برگشت */
-        .btn-back {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #7d5a4a;
-            /* رنگ سبز برای دکمه برگشت */
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            margin-top: 20px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        /* افکت هاور روی دکمه برگشت */
-        .btn-back:hover {
-            background-color: #7d5a4a;
-            transform: translateY(-5px);
-        }
-
-        /* افکت روی دکمه برگشت زمانی که فعال یا فکوس شده است */
-        .btn-back:active,
-        .btn-back:focus {
-            background-color: #7d5a4a;
-            transform: translateY(0);
-        }
-
-
-
-
 
 
 
@@ -715,10 +602,6 @@
 
 
 
-
-
-
-
 <body>
 
     <header>
@@ -727,16 +610,11 @@
     <div class="main-content">
         <h1>Welcome,{{ session['username'] }}</h1>
 
-
-
-
-
         <!-- Profile Section -->
         <div class="card">
             <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="Account Icon">
             <h3>Welcome,{{ session['username'] }}</h3>
             <p>Email: {{ session['email'] }}</p>
-
 
 
 
@@ -804,301 +682,149 @@
 
 
                 </div>
-                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/wishlist'">My
-                    Wishlist</button>
-
-                <div id="wishList" style="display: none; margin-top: 20px;"></div>
-                <div class="product-container">
-                    {% for product in wishlist %}
-                    <div class="product">
-                        <h3>{{ product['name'] }}</h3>
-                        <form action="/add_to_wishlist" method="POST">
-                            <input type="hidden" name="product_name" value="{{ product.name }}">
-                            <button type="submit">Add to Wishlist</button>
-                        </form>
-
-                        <div class="product-gallery">
-                            <img src="{{ url_for('static', filename=product['image_path']) }}"
-                                alt="{{ product['username'] }}" style="width: 100%; height: auto;">
-                        </div>
-                        <p>{{ product['description'] }}</p>
-                        <p><strong>${{ product['price'] }}</strong></p>
-
-                        <form action="/order" method="POST">
-                            <input type="hidden" name="product_id" value="{{ product['id'] }}">
-                            <label for="quantity">Quantity:</label>
-                            <input type="number" id="quantity" name="quantity" value="1" min="1" required>
-                            <button type="submit">Order Now</button>
-                        </form>
-                        {% if product.in_wishlist == 1 %}
-                        <div class="wishlist-icon in-wishlist">!</div>
-                        {% else %}
-                        <div class="wishlist-icon not-in-wishlist">♡</div>
-                        {% endif %}
-
-                    </div>
-                    {% endfor %}
-                </div>
-
 
                 <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/profile'">Manage
                     Profile</button>
-                <form method="GET" action="{{ url_for('search_product') }}">
-                    <input type="text" name="query" placeholder="search product" required>
-                    <button class="btn btn-primary" type="submit">Search</button>
-                </form>
 
-                <h1>Categories</h1>
-                <ul class="btn btn-primary">
-                    {% for category in categories %}
-                    <li>
-                        <a href="{{ url_for('products_by_category', category_id=category['id']) }}">
-                            {{ category['name'] }}
-                        </a>
-                    </li>
-                    {% endfor %}
-
-                    {% if category_id %}
-                    <a href="{{ url_for('user_dashboard') }}" class="btn btn-back">Back</a>
-                    {% endif %}
-                </ul>
-
+                <button id="toggleWishlistBtn" class="btn btn-primary" onclick="location.href='/user_dashboard'">Back To
+                    Home</button>
 
 
 
                 <div class="product-container">
-                    {% for product in products %}
-                    <div class="product">
-                        <h3>{{ product['name'] }}</h3>
-                        <div class="product-gallery">
-                            <a href="{{ url_for('product_details', product_id=product['id']) }}">
+
+                    <h1>نتایج جستجو برای "{{ query }}"</h1>
+
+                    {% if products %}
+                    <ul>
+                        {% for product in products %}
+                        <div class="product">
+                            <h3>{{ product['name'] }}</h3>
+                            <div class="product-gallery">
                                 <img src="{{ url_for('static', filename=product['image_path']) }}"
                                     alt="{{ product['username'] }}" style="width: 100%; height: auto;">
-                            </a>
+                            </div>
+                            <p>{{ product['description'] }}</p>
+                            <p><strong>${{ product['price'] }}</strong></p>
+
+                            <form action="/order" method="POST">
+                                <input type="hidden" name="product_id" value="{{ product['id'] }}">
+                                <label for="quantity">Quantity:</label>
+                                <input type="number" id="quantity" name="quantity" value="1" min="1" required>
+                                <button type="submit" class="btn btn-primary">Order Now</button>
+                            </form>
+
+                            {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>محصولی یافت نشد.</p>
+                    {% endif %}
 
 
-                        </div>
-                        <p>{{ product['description'] }}</p>
-                        <p><strong>${{ product['price'] }}</strong></p>
-
-                        <form action="/order" method="POST">
-                            <input type="hidden" name="product_id" value="{{ product['id'] }}">
-                            <label for="quantity">Quantity:</label>
-                            <input type="number" id="quantity" name="quantity" value="1" min="1" required>
-                            <button type="submit" class="btn btn-primary">Order Now</button>
-                        </form>
-                        <form action="/add_to_wishlist" method="POST">
-                            <input type="hidden" name="product_id" value="{{ product.id }}">
-                            <button type="submit" class="btn btn-primary">Add to Wishlist</button>
-                        </form>
-                        {% if product.in_wishlist == 1 %}
-                        <div class="wishlist-icon in-wishlist">!</div>
-                        {% else %}
-                        <div class="wishlist-icon not-in-wishlist">♡</div>
-                        {% endif %}
-
-
-                    </div>
-                    {% endfor %}
                 </div>
-
-
-                <!-- نمایش پیام‌های flash -->
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
-
-
-
-
 
             </div>
-            <footer>
-                <p>&copy; 2024 ELES SHOP. All rights reserved.</p>
-                <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-                <p>Contact us: elsashakiba@gmail.com</p>
-            </footer>
+
+
+
 
 
         </div>
+        <footer>
+            <p>&copy; 2024 ELES SHOP. All rights reserved.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            <p>Contact us: elsashakiba@gmail.com</p>
+        </footer>
 
 
-        <script>
-            // دریافت عنصر هدر
-            const header = document.querySelector('header');
+    </div>
 
-            // تابعی که وقتی اسکرول انجام می‌شود، هدر را کوچکتر می‌کند
-            window.onscroll = function () {
-                if (window.scrollY > 50) { // وقتی صفحه بیشتر از 50 پیکسل اسکرول شد
-                    header.classList.add('shrink'); // کلاس shrink را به هدر اضافه می‌کند
-                } else {
-                    header.classList.remove('shrink'); // در غیر این صورت، کلاس shrink را حذف می‌کند
-                }
-            };
 
-            function addToCart(productId) {
-                fetch('/add_to_cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        product_id: productId
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert('Product added to cart!');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+    <script>
+        // دریافت عنصر هدر
+        const header = document.querySelector('header');
+
+        // تابعی که وقتی اسکرول انجام می‌شود، هدر را کوچکتر می‌کند
+        window.onscroll = function () {
+            if (window.scrollY > 50) { // وقتی صفحه بیشتر از 50 پیکسل اسکرول شد
+                header.classList.add('shrink'); // کلاس shrink را به هدر اضافه می‌کند
+            } else {
+                header.classList.remove('shrink'); // در غیر این صورت، کلاس shrink را حذف می‌کند
             }
+        };
 
-            // گرفتن دکمه و بخش لیست سفارشات
-            const toggleBtn = document.getElementById('toggleOrdersBtn');
-            const ordersList = document.getElementById('ordersList');
-
-            // افزودن رویداد کلیک برای دکمه
-            toggleBtn.addEventListener('click', () => {
-                if (ordersList.style.display === 'none') {
-                    // نمایش لیست سفارشات
-                    ordersList.style.display = 'block';
-                    toggleBtn.textContent = 'Hide Orders';
-                } else {
-                    // مخفی کردن لیست سفارشات
-                    ordersList.style.display = 'none';
-                    toggleBtn.textContent = 'My Orders';
-                }
-            });
-            document.getElementById('wishlist-toggle').addEventListener('click', function () {
-                var wishlistSection = document.getElementById('wishlist-section');
-
-                if (wishlistSection.style.display === 'none') {
-                    // بارگذاری محصولات لیست علاقه‌مندی‌ها از API
-                    fetch('/wishlist_data')
-                        .then(response => response.json())
-                        .then(data => {
-                            var wishlistProducts = document.getElementById('wishlist-products');
-                            wishlistProducts.innerHTML = ''; // پاک کردن محتوای قبلی
-                            if (data.length > 0) {
-                                data.forEach(product => {
-                                    var productDiv = document.createElement('div');
-                                    productDiv.classList.add('product');
-                                    productDiv.innerHTML = `
-                                                <img src="${product.image_path}" alt="${product.name}">
-                                                <h4>${product.name}</h4>
-                                                <p>${product.description}</p>
-                                                <p>$${product.price}</p>
-                                            `;
-                                    wishlistProducts.appendChild(productDiv);
-                                });
-                            } else {
-                                wishlistProducts.innerHTML = '<p>Your wishlist is empty.</p>';
-                            }
-                        });
-
-                    wishlistSection.style.display = 'block'; // نمایش بخش لیست علاقه‌مندی‌ها
-                } else {
-                    wishlistSection.style.display = 'none'; // پنهان کردن بخش لیست علاقه‌مندی‌ها
-                }
-            });
-            document.querySelectorAll('.wishlist-icon').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    const productId = this.dataset.productId;
-                    const isInWishlist = this.classList.contains('in-wishlist');
-
-                    fetch(`/toggle_wishlist/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ in_wishlist: !isInWishlist })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // به‌روزرسانی کلاس‌ها برای نمایش تغییر
-                                if (isInWishlist) {
-                                    this.classList.remove('in-wishlist');
-                                    this.classList.add('not-in-wishlist');
-                                    this.textContent = '♡';
-                                } else {
-                                    this.classList.remove('not-in-wishlist');
-                                    this.classList.add('in-wishlist');
-                                    this.textContent = '❤️';
-                                }
-                            } else {
-                                alert('Failed to update wishlist status');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+        function addToCart(productId) {
+            fetch('/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Product added to cart!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
-            });
+        }
+
+        // گرفتن دکمه و بخش لیست سفارشات
+        const toggleBtn = document.getElementById('toggleOrdersBtn');
+        const ordersList = document.getElementById('ordersList');
+
+        // افزودن رویداد کلیک برای دکمه
+        toggleBtn.addEventListener('click', () => {
+            if (ordersList.style.display === 'none') {
+                // نمایش لیست سفارشات
+                ordersList.style.display = 'block';
+                toggleBtn.textContent = 'Hide Orders';
+            } else {
+                // مخفی کردن لیست سفارشات
+                ordersList.style.display = 'none';
+                toggleBtn.textContent = 'My Orders';
+            }
+        });
 
 
-            function toggleSection(sectionId, buttonId, apiUrl = null) {
-                const section = document.getElementById(sectionId);
-                const button = document.getElementById(buttonId);
+        function toggleSection(sectionId, buttonId, apiUrl = null) {
+            const section = document.getElementById(sectionId);
+            const button = document.getElementById(buttonId);
 
-                if (section.style.display === 'none') {
-                    if (apiUrl) {
-                        fetch(apiUrl)
-                            .then(response => response.json())
-                            .then(data => {
-                                const sectionContent = section.querySelector('.section-content');
-                                sectionContent.innerHTML = ''; // پاک کردن محتوای قبلی
-                                if (data.length > 0) {
-                                    data.forEach(item => {
-                                        const itemDiv = document.createElement('div');
-                                        itemDiv.classList.add('item');
-                                        itemDiv.innerHTML = `
+            if (section.style.display === 'none') {
+                if (apiUrl) {
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            const sectionContent = section.querySelector('.section-content');
+                            sectionContent.innerHTML = ''; // پاک کردن محتوای قبلی
+                            if (data.length > 0) {
+                                data.forEach(item => {
+                                    const itemDiv = document.createElement('div');
+                                    itemDiv.classList.add('item');
+                                    itemDiv.innerHTML = `
                                             <img src="${item.image_path}" alt="${item.name}">
                                             <h4>${item.name}</h4>
                                             <p>${item.description}</p>
                                             <p>$${item.price}</p>
                                         `;
-                                        sectionContent.appendChild(itemDiv);
-                                    });
-                                } else {
-                                    sectionContent.innerHTML = '<p>No items available.</p>';
-                                }
-                            });
-                    }
-                    section.style.display = 'block';
-                    button.textContent = `Hide ${button.textContent}`;
-                } else {
-                    section.style.display = 'none';
-                    button.textContent = button.textContent.replace('Hide', 'Show');
+                                    sectionContent.appendChild(itemDiv);
+                                });
+                            } else {
+                                sectionContent.innerHTML = '<p>No items available.</p>';
+                            }
+                        });
                 }
+                section.style.display = 'block';
+                button.textContent = `Hide ${button.textContent}`;
+            } else {
+                section.style.display = 'none';
+                button.textContent = button.textContent.replace('Hide', 'Show');
             }
-
-            fetch('/add_to_wishlist', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ product_id: productId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message); // پیام "Product already in wishlist!" یا "Product added to wishlist!"
-                })
-                .catch(error => console.error('Error:', error));
-
-            // بسته شدن خودکار پیام بعد از 3 ثانیه
-            setTimeout(function () {
-                let alerts = document.querySelectorAll('.alert');
-                alerts.forEach(alert => {
-                    alert.style.display = 'none';
-                });
-            }, 3000);
+        }
 
 
 
@@ -1110,10 +836,7 @@
 
 
 
-
-
-
-        </script>
+    </script>
 </body>
 
 </html>

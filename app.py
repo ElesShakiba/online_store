@@ -4,13 +4,10 @@ from flask import Flask, request, jsonify, session, render_template, redirect, u
 from flask_bcrypt import Bcrypt
 import datetime
 import os
-from flask import render_template, request
 from datetime import datetime
-from flask import request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
-import os
 from flask import Flask, request, redirect, url_for, render_template, flash
-from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = '220034'  # برای سشن
@@ -410,6 +407,32 @@ def get_products():
     products = cursor.fetchall()
     conn.close()
     return render_template('user_dashboard.html', products=products)
+@app.route('/product/<int:product_id>')
+def product_details(product_id):
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # بازیابی اطلاعات محصول از پایگاه‌داده
+    cursor.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+    product = cursor.fetchone()
+
+    # بازیابی سایر تصاویر محصول (اختیاری)
+    cursor.execute("SELECT * FROM product_images WHERE product_id = ?", (product_id,))
+    images = cursor.fetchall()
+
+    return render_template('product_details.html', product=product, images=images)
+@app.route('/search', methods=['GET'])
+def search_product():
+    query = request.args.get('query')  # دریافت ورودی جستجو از فرم
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # اجرای کوئری جستجو
+    cursor.execute("SELECT * FROM products WHERE name LIKE ?", ('%' + query + '%',))
+    products = cursor.fetchall()
+
+    return render_template('search_results.html', products=products, query=query)
+
 
 
 
