@@ -48,9 +48,9 @@
             z-index: 1000;
             /* برای اطمینان از اینکه هدر از دیگر بخش‌ها بالاتر باشد */
             transition: all 0.4s ease-in-out;
-            font-family: 'Roboto', sans-serif;
-
+            font-family: "Shadows Into Light", cursive;
         }
+
 
         header.shrink {
             padding: 2px 0;
@@ -85,7 +85,7 @@
 
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Shadows Into Light", cursive;
             margin: 0;
             display: flex;
             background-color: #a47864;
@@ -132,6 +132,7 @@
 
         .main-content h1 {
             color: #4f392e;
+            font-family: "Shadows Into Light", cursive;
         }
 
         .card {
@@ -692,12 +693,14 @@
 
 
                 <div class="product-container">
+                    <h1>search result for :"{{ query }}"</h1>
+                    {% for product in products %}
 
-                    <h1>نتایج جستجو برای "{{ query }}"</h1>
+
 
                     {% if products %}
                     <ul>
-                        {% for product in products %}
+
                         <div class="product">
                             <h3>{{ product['name'] }}</h3>
                             <div class="product-gallery">
@@ -714,11 +717,12 @@
                                 <button type="submit" class="btn btn-primary">Order Now</button>
                             </form>
 
-                            {% endfor %}
+
                     </ul>
                     {% else %}
                     <p>محصولی یافت نشد.</p>
                     {% endif %}
+                    {% endfor %}
 
 
                 </div>

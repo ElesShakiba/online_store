@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
 </head>
 <body>
     <h1>Manage Users</h1>
@@ -28,7 +29,7 @@
                     <th>Email</th>
                     <th>Role</th>
                     <th>Actions</th>
-                </tr>
+                </tr>+
             </thead>
             <tbody>
                 {% for user in users %}
@@ -38,6 +39,7 @@
                     <td>{{ user['email'] }}</td>
                     <td>{{ user['role'] }}</td>
                     <td>
+                        
                         <button onclick="editUser('{{ user['id'] }}', '{{ user['username'] }}', '{{ user['email'] }}', '{{ user['role'] }}')">Edit</button>
                         <button onclick="deleteUser('{{ user['id'] }}')">Delete</button>
                     </td>

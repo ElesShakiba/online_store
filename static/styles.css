@@ -1,17 +1,4 @@
-.header {
-    background: linear-gradient(135deg, #4a0606, #e4e4e4); /* رنگ‌های دلخواه */
-    height: 150px; /* ارتفاع هدر */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    font-size: 2.5em; /* اندازه متن */
-    font-family: "Shadows Into Light", cursive;
-    font-weight: 400;
-    font-style: normal;
-}
+
 .container {
     text-align: center;
     padding: 20px;
@@ -30,25 +17,28 @@
     margin: 10px;
     font-size: 16px;
     color: white;
-    background-color: #471501;
+    background-color:  #7d5a4a;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: "Shadows Into Light", cursive;
 }
 .btn:hover {
-    background-color: #a0522d;
+    background-color: #a7806e;
 }
 .form-container {
     display: none;
     margin-top: 20px;
     text-align: left;
+    font-family: "Shadows Into Light", cursive;
 }
 .form-container form {
-    background-color: #ceaba3;
+    background-color: #d9c7be;
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: "Shadows Into Light", cursive;
 }
 
 label {
@@ -65,7 +55,7 @@ select {
     border-radius: 4px;
 }
 .submit-btn {
-    background-color: #8b4513;
+    background-color: #a47864;
     color: white;
     padding: 10px;
     border: none;
@@ -74,7 +64,7 @@ select {
     width: 100%;
 }
 .submit-btn:hover {
-    background-color: #a0522d;
+    background-color: #a47864;
 }
 .error-message {
     color: red;
@@ -175,12 +165,12 @@ body {
     text-align: center;
 }
 h1 {
-    color: #370b0b;
+    color: #3b241a;
 }
 .dashboard-btn {
     margin: 10px;
     padding: 10px 20px;
-    background-color: #8b4513;
+    background-color: #a47864;
     color: white;
     border: none;
     border-radius: 5px;
@@ -242,7 +232,7 @@ h1 {
 }
 
 .toggle-btn {
-    background-color: #4a0606;
+    background-color:  #7d5a4a;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -253,6 +243,6 @@ h1 {
 }
 
 .toggle-btn:hover {
-    background-color: #6b0c0c;
+    background-color:  #966d59;
 }
 

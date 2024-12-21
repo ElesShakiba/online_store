@@ -7,12 +7,54 @@
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
+        /* برای صفحه‌های کوچک (مثلاً موبایل‌ها) */
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+        }
+
+        /* برای صفحه‌های بزرگتر */
+        @media (min-width: 601px) {
+            body {
+                font-size: 16px;
+            }
+        }
+        header {
+            color: white;
+            /* رنگ متن */
+            text-align: center;
+            /* وسط‌چین کردن متن */
+            padding: 20px 0;
+            /* فاصله داخلی */
+            position: fixed;
+            /* برای ثابت نگه داشتن هدر در بالای صفحه */
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* تمام عرض صفحه را بگیرد */
+            background-color: #a47864;
+            /* رنگ پس زمینه */
+            color: #4f392e;
+            /* رنگ متن */
+            z-index: 1000;
+            /* برای اطمینان از اینکه هدر از دیگر بخش‌ها بالاتر باشد */
+            transition: all 0.4s ease-in-out;
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+
+
         body {
-            
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f7f7f7;
+            background-color: #a47864;
+            margin-top: 80px;
+            /* به اندازه ارتفاع هدر فضای بالای صفحه را خالی می‌کنیم */
         }
+
         button {
             padding: 10px 20px;
             background-color: #4CAF50;
@@ -20,13 +62,13 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            }
-        
+        }
+
         button:hover {
             background-color: #45a049;
-            }
+        }
 
-        
+
 
 
         .product-container {
@@ -67,6 +109,7 @@
             font-weight: bold;
             font-size: 16px;
         }
+
         .product-container {
             display: flex;
             flex-wrap: wrap;
@@ -105,12 +148,13 @@
             font-weight: bold;
             font-size: 16px;
         }
+
         .shadows-into-light-regular {
             font-family: "Shadows Into Light", serif;
             font-weight: 400;
             font-style: normal;
-          }
-          
+        }
+
 
 
 
@@ -123,7 +167,7 @@
 
         .sidebar h2 {
             text-align: center;
-            color: #4a0606;
+            color:  #221610;
         }
 
         .sidebar ul {
@@ -137,7 +181,7 @@
 
         .sidebar ul li a {
             text-decoration: none;
-            color: #4a0606;
+            color:  #a47864;
             font-weight: bold;
         }
 
@@ -147,7 +191,7 @@
         }
 
         .main-content h1 {
-            color: #4a0606;
+            color:  #3f2f27;
         }
 
         .card {
@@ -159,7 +203,7 @@
 
         .card h3 {
             margin: 0;
-            color: #4a0606;
+            color:  #3e2c24;
         }
 
         .card p {
@@ -174,7 +218,7 @@
         }
 
         .card button {
-            background-color: #4a0606;
+            background-color:  #a47864;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -192,7 +236,7 @@
             gap: 20px;
             justify-content: center;
         }
-        
+
         .product {
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -203,32 +247,31 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s;
         }
-        
+
         .product:hover {
             transform: scale(1.05);
         }
-        
+
         .product img {
             max-width: 100%;
             border-radius: 5px;
             margin-bottom: 10px;
         }
-        
+
         .product h3 {
             font-size: 20px;
             color: #333;
             margin-bottom: 10px;
         }
-        
+
         .product p {
             font-size: 14px;
             color: #666;
         }
-        
+
         .product strong {
             color: #d10000;
         }
-        
     </style>
 </head>
 
@@ -236,7 +279,7 @@
     <div class="main-content">
         <h1>Welcome, {{ session['username'] }}</h1>
     </div>
-    <h1>User Dashboard - Products</h1>
+    <h1>Admin Dashboard - Products</h1>
     <div class="product-container">
         {% for product in products %}
         <div class="product-card">
@@ -247,44 +290,44 @@
         </div>
         {% endfor %}
     </div>
-    
 
-        
 
-    
-        <div class="card">
-            <img src="{{ url_for('static', filename='images/product-icon.png') }}" alt="Product Icon">
-            <h3>Manage Products</h3>
-            <p>View, add, edit or delete products from the store.</p>
-            
-            <button onclick="location.href='/manage_products'">Manage Products</button>
-        </div>
 
-        
 
-         Manage Users Section 
-        <div class="card">
-            <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="User Icon">
-            <h3>Manage Users</h3>
-            <p>View all users and manage their details.</p>
-            <button onclick="location.href='/manage_users'">Manage Users</button>
-        </div>
 
-         View Orders Section 
-        <div class="card">
-            <img src="{{ url_for('static', filename='images/order-icon.png') }}" alt="Order Icon">
-            <h3>View Orders</h3>
-            <p>See all orders placed by users.</p>
-            <button onclick="location.href='/view_orders'">View Orders</button>
-        </div>
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/product-icon.png') }}" alt="Product Icon">
+        <h3>Manage Products</h3>
+        <p>View, add, edit or delete products from the store.</p>
 
-         View Reports Section 
-        <div class="card">
-            <img src="{{ url_for('static', filename='images/report-icon.png') }}" alt="Report Icon">
-            <h3>View Reports</h3>
-            <p>Access reports related to sales, users, and more.</p>
-            <button onclick="location.href='/view_reports'">View Reports</button>
-        </div>
+        <button onclick="location.href='/manage_products'">Manage Products</button>
+    </div>
+
+
+
+    Manage Users Section
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="User Icon">
+        <h3>Manage Users</h3>
+        <p>View all users and manage their details.</p>
+        <button onclick="location.href='/manage_users'">Manage Users</button>
+    </div>
+
+    View Orders Section
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/order-icon.png') }}" alt="Order Icon">
+        <h3>View Orders</h3>
+        <p>See all orders placed by users.</p>
+        <button onclick="location.href='/view_orders'">View Orders</button>
+    </div>
+
+    View Reports Section
+    <div class="card">
+        <img src="{{ url_for('static', filename='images/report-icon.png') }}" alt="Report Icon">
+        <h3>View Reports</h3>
+        <p>Access reports related to sales, users, and more.</p>
+        <button onclick="location.href='/view_reports'">View Reports</button>
+    </div>
     </div>
 
     <table>
@@ -294,7 +337,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
-                
+
             </tr>
         </thead>
         <tbody>
@@ -305,6 +348,7 @@
                 <td>{{ session['role'] }}</td>
 
             </tr>
+            
 
         </tbody>
     </table>
@@ -319,7 +363,7 @@
 </html>
 <script>
     document.querySelectorAll("button").forEach((button) => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const action = this.textContent.trim(); // متن دکمه
 
             let url = '';
@@ -333,22 +377,7 @@
                 url = '/view_reports';
             }
 
-            // ارسال درخواست به سرور
-            if (url) {
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message); // نمایش پیام
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        alert("An error occurred.");
-                    });
-            } else {
-                alert("No action defined for this button.");
-            }
+
         });
     });
 </script>
-
-

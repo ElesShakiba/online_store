@@ -1,18 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Orders</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        header {
+            color: white;
+            /* رنگ متن */
+            text-align: center;
+            /* وسط‌چین کردن متن */
+            padding: 20px 0;
+            /* فاصله داخلی */
+            position: fixed;
+            /* برای ثابت نگه داشتن هدر در بالای صفحه */
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* تمام عرض صفحه را بگیرد */
+            background-color: #a47864;
+            /* رنگ پس زمینه */
+            color: #4f392e;
+            /* رنگ متن */
+            z-index: 1000;
+            /* برای اطمینان از اینکه هدر از دیگر بخش‌ها بالاتر باشد */
+            transition: all 0.4s ease-in-out;
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #caafa2;
+            margin-top: 80px;
+            /* به اندازه ارتفاع هدر فضای بالای صفحه را خالی می‌کنیم */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #a47864;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
+
 <body>
     <h1>View Orders</h1>
 
     <!-- فیلد جستجو -->
     <div class="search-bar">
         <form method="GET" action="/view_orders">
-            <input type="text" name="search" placeholder="Search by order ID, username, or status" value="{{ search_query }}">
+            <input type="text" name="search" placeholder="Search by order ID, username, or status"
+                value="{{ search_query }}">
             <button type="submit">Search</button>
         </form>
     </div>
@@ -35,18 +86,13 @@
             <tbody>
                 {% for order in orders %}
                 <tr>
-                    <td>{{ order['order_id'] }}</td>
+                    <td>{{ order['id'] }}</td>
                     <td>{{ order['username'] }}</td>
                     <td>{{ order['status'] }}</td>
                     <td>{{ order['product_name'] }}</td>
                     <td>${{ order['product_price'] }}</td>
-
-
-
-
-
                     <td>
-                        <button onclick="editOrder('{{ order['order_id'] }}', '{{ order['status'] }}')">Edit</button>
+                        <button onclick="editOrder('{{ order['order_id'] }}', '{{ order['status'] }}')" >Edit</button>
                         <button onclick="deleteOrder('{{ order['order_id'] }}')">Delete</button>
                     </td>
                 </tr>
@@ -84,16 +130,17 @@
                 fetch(`/delete_order/${order_id}`, {
                     method: 'DELETE'
                 })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Order deleted successfully!');
-                        location.reload();
-                    } else {
-                        alert('Failed to delete order.');
-                    }
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Order deleted successfully!');
+                            location.reload();
+                        } else {
+                            alert('Failed to delete order.');
+                        }
+                    });
             }
         }
     </script>
 </body>
+
 </html>

@@ -5,9 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Reports</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+    header {
+        color: white;
+        /* رنگ متن */
+        text-align: center;
+        /* وسط‌چین کردن متن */
+        padding: 20px 0;
+        /* فاصله داخلی */
+        position: fixed;
+        /* برای ثابت نگه داشتن هدر در بالای صفحه */
+        top: 0;
+        left: 0;
+        width: 100%;
+        /* تمام عرض صفحه را بگیرد */
+        background-color: #cbb2a6;
+        /* رنگ پس زمینه */
+        color: #4f392e;
+        /* رنگ متن */
+        z-index: 1000;
+        /* برای اطمینان از اینکه هدر از دیگر بخش‌ها بالاتر باشد */
+        transition: all 0.4s ease-in-out;
+        font-family: 'Roboto', sans-serif;
+
+    }
+
+
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color:#caafa2;
+        margin-top: 80px;
+        /* به اندازه ارتفاع هدر فضای بالای صفحه را خالی می‌کنیم */
+    }
+</style>
 </head>
-<body>
+<header>
     <h1>Reports</h1>
+</header>
+    <body>
 
     <!-- گزارش فروش -->
     <section>

@@ -585,8 +585,16 @@ def delete_order(order_id):
         cursor.execute("DELETE FROM orders WHERE id = ?", (order_id,))
         conn.commit()
         conn.close()
-        return redirect('/user_dashboard')  # بازگشت به داشبورد کاربر
-    return "Access denied!", 403
+        return redirect('/user_dashboard')# بازگشت به داشبورد کاربر
+    elif 'role' in session and session['role'] == 'admin':
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM orders WHERE id = ?", (order_id,))
+        conn.commit()
+        conn.close()
+        return redirect('/view_orders')
+    else:
+        return "Access denied!", 403
 
 
 
@@ -836,6 +844,8 @@ def delete_wishlist(product_id):
         return redirect(url_for('wishlist'))  # بازگشت به صفحه ویش‌لیست
     else:
         return "Access Denied", 403
+    
+    
 
 
 
