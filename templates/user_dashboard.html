@@ -135,6 +135,7 @@
 
         .main-content h1 {
             color: #4f392e;
+            text-align: left;
         }
 
         .card {
@@ -156,7 +157,7 @@
 
         .card p {
             color: #333;
-            text-align: center;
+            text-align: left;
 
         }
 
@@ -880,18 +881,6 @@
     </style>
 </head>
 
-
-
-
-
-
-
-
-
-
-
-
-
 <body>
     <div class="main-content">
         <h1> My Website </h1>
@@ -951,84 +940,94 @@
     </div>
     <div class="main-content">
         <button class="btn logout" onclick="logout()">Logout</button>
-        <h1>Welcome,{{ session['username'] }}</h1>
+
         <!-- Profile Section -->
         <div class="card">
+
+
             <div class="card">
+                <h1>Welcome,{{ session['username'] }}</h1>
+
+
+                <p>username: "{{ session['username'] }}" </p>
+                <p>Email: "{{ session['email'] }}"</p>
+
                 <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="Account Icon">
-            </div>
-
-            <div class="card">
-
-                <p>username: "{{ session['username'] }}" Email: "{{ session['email'] }}"</p>
-
-
-
-
-
                 <!-- Orders Section -->
-
-
-                <!-- دکمه باز و بسته کردن -->
-                <button id="toggleOrdersBtn" class="btn btn-primary">My Orders</button>
-
-                <!-- لیست سفارشات -->
-                <div id="ordersList" style="display: none; margin-top: 20px;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Product</th>
-                                <th>Status</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Image</th>
-                                <th>Progress</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for order in orders %}
-                            <tr>
-                                <td>{{ order['order_id'] }}</td>
-                                <td>{{ order['product_name'] }}</td>
-                                <td>{{ order['status'] }}</td>
-                                <td>{{ order['quantity'] }}</td>
-
-                                <td>${{ order['quantity'] * order['product_price'] }}</td>
-                                <td><img src="{{ url_for('static', filename=order['image_path'])}}" alt="Image"
-                                        width="100"></td>
-                                <td>
-                                    <div class="progress-bar">
-                                        <div class="progress" data-status="{{ order['status'] }}"></div>
-                                    </div>
-                                    <div class="status-label">
-                                        {% if order['status'] == 'Pending' %}
-                                        Order is Pending
-                                        {% elif order['status'] == 'Processing' %}
-                                        Order is being Processed
-                                        {% elif order['status'] == 'Shipped' %}
-                                        Order has been Shipped
-                                        {% endif %}
-                                    </div>
-                                </td>
-                                <td>
-                                    <form action="/delete_order/{{ order['order_id'] }}" method="POST">
-                                        <button type="submit" class="btn btn-primary">Delete</button>
-                                    </form>
-                                </td>
-
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-
-                    </table>
-                    <div class="total-price-container">
-                        <p>Total Price: <span class="total-price">${{ total_price }}</span></p>
-                        <a href="/payment_gateway" class="payment-button">Proceed to Payment</a>
-                    </div>
+                <div>
                 </div>
             </div>
+        </div>
+
+        <!-- دکمه باز و بسته کردن -->
+        <div class="main-content">
+            <div class="card">
+                <button id="toggleOrdersBtn" class="btn btn-primary">My Orders</button>
+            </div>
+        </div>
+
+
+
+        <div class="main-content">
+
+
+            <!-- لیست سفارشات -->
+            <div id="ordersList" style="display: none; margin-top: 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Product</th>
+                            <th>Status</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Image</th>
+                            <th>Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order['order_id'] }}</td>
+                            <td>{{ order['product_name'] }}</td>
+                            <td>{{ order['status'] }}</td>
+                            <td>{{ order['quantity'] }}</td>
+
+                            <td>${{ order['quantity'] * order['product_price'] }}</td>
+                            <td><img src="{{ url_for('static', filename=order['image_path'])}}" alt="Image" width="100">
+                            </td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress" data-status="{{ order['status'] }}"></div>
+                                </div>
+                                <div class="status-label">
+                                    {% if order['status'] == 'Pending' %}
+                                    Order is Pending
+                                    {% elif order['status'] == 'Processing' %}
+                                    Order is being Processed
+                                    {% elif order['status'] == 'Shipped' %}
+                                    Order has been Shipped
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <form action="/delete_order/{{ order['order_id'] }}" method="POST">
+                                    <button type="submit" class="btn btn-primary">Delete</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+                <div class="total-price-container">
+                    <p>Total Price: <span class="total-price">${{ total_price }}</span></p>
+                    <a href="/payment_gateway" class="payment-button">Proceed to Payment</a>
+                </div>
+            </div>
+
 
 
 
